@@ -113,12 +113,10 @@ public class LevelParserStarter : MonoBehaviour
                 {
                     if (BC.gameObject.name == "Brick(Clone)")
                     {
-                        Debug.Log("Brick broken");
                         Destroy(BC.gameObject);
                     }
                     else if (BC.gameObject.name == "Question(Clone)")
                     {
-                        Debug.Log("Question broken");
                         coins++;
                         coinTracker.text = "" + coins;
                         Destroy(BC.gameObject);
