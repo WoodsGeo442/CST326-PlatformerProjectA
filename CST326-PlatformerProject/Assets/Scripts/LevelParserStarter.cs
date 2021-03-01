@@ -16,15 +16,19 @@ public class LevelParserStarter : MonoBehaviour
 
     public GameObject Stone;
 
-    public Text Score;
+    public GameObject Water;
 
-    public Text coinTracker;
+    public GameObject Goal;
 
-    public Text TimeText;
+    [SerializeField] private Text ScoreTracker;
 
-    public int score;
+    [SerializeField] private Text coinTracker;
 
-    public int coins;
+    [SerializeField] private Text TimeText;
+
+    public float score = 0;
+
+    public float coins = 0;
 
     public float time;
 
@@ -33,7 +37,10 @@ public class LevelParserStarter : MonoBehaviour
     void Start()
     {
         RefreshParse();
-        time = 400;
+        time = 100;
+        TimeText.GetComponent<Text>().text = time.ToString();
+        ScoreTracker.GetComponent<Text>().text = score.ToString();
+        coinTracker.GetComponent<Text>().text = coins.ToString();
     }
 
 
@@ -73,6 +80,8 @@ public class LevelParserStarter : MonoBehaviour
             case '?': ToSpawn = QuestionBox; break;
             case 'x': ToSpawn = Rock; break;
             case 's': ToSpawn = Stone; break;
+            case 'w': ToSpawn = Water; break;
+            case 'g': ToSpawn = Goal; break;
             //default: Debug.Log("Default Entered"); break;
             default: return;
                 //ToSpawn = //Brick;       break;
@@ -80,6 +89,31 @@ public class LevelParserStarter : MonoBehaviour
 
         ToSpawn = GameObject.Instantiate(ToSpawn, parentTransform);
         ToSpawn.transform.localPosition = positionToSpawn;
+    }
+
+    public void increaseScore()
+    {
+        score += 100;
+        Debug.Log("Score Increased");
+        ScoreTracker.text = (score).ToString("0");
+    }
+
+    public void increaseCoins()
+    {
+        coins++;
+        coinTracker.text = (coins).ToString("0");
+    }
+
+    public void winGame()
+    {
+        Time.timeScale = 0;
+        Debug.Log("You Win!!!");
+    }
+
+    public void quitGame()
+    {
+        Time.timeScale = 0;
+        Debug.Log("Game Over!!!");
     }
 
     public void RefreshParse()
@@ -101,6 +135,10 @@ public class LevelParserStarter : MonoBehaviour
     {
         time -= Time.deltaTime;
         TimeText.text = time.ToString("#");
+        if (time < 0)
+        {
+            quitGame();
+        }
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
